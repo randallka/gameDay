@@ -1,4 +1,5 @@
 <h1>GameDay</h1>
+<p>(Construction in process, UI updates are not complete)</p>
 
 <img src="https://i.imgur.com/9R5zbN5.png">
 
@@ -29,12 +30,6 @@ Team page below
 Game page below
 <img src="https://i.imgur.com/f4w2jJW.png">
 
-
-<h5>Entity-Relationship-Diagram (ERD) Diagram</h5>
-
-<img src="https://i.imgur.com/a58Ygzt.png">
-
-
 <h3>Technologies Used</h3>
 <ul>
     <li><em>Python</em></li>
@@ -42,7 +37,6 @@ Game page below
     <li><em>CSS</em></li>
     <li><em>Bootstrap</em></li>
     <li><em>Django</em></li>
-    <li><em>DTL (Django Templates)</em></li>
     <li><em>PostgreSQL</em></li>
     <li><em>Docker</em></li>
     <li><em>fly.io</em></li>
@@ -65,7 +59,7 @@ Game Page stats below (desktop)
 
 <h3>Getting Started</h3>
 
-View <strong><em>GameDay</em></strong> here: (link coming soon)
+View <strong><em>GameDay</em></strong> here: https://twilight-sky-8171.fly.dev/
 
 View Trello project board for planning here: https://trello.com/b/bJN3h2y4/gameday
 
