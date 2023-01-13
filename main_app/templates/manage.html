@@ -1,0 +1,35 @@
+{% extends 'new_base.html' %}
+
+
+{% block content %}
+<div>
+    <h1>Manage Favorites</h1>
+</div>
+<div class="row d-flex flex-row">
+{% for team in favorites %}
+<div class="col manage-column">
+<p>{{ team.team.name }}</p>
+<form action=" {% url 'remove_team' team.team.id %} " method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger btn-small" type="submit">Remove </button>
+</form>
+</div>
+{% endfor %}
+</div>
+
+{% if favorites.length >= 5 %}
+    
+{% endif %}
+    
+<div class="row">
+    <a href="{% url 'add_page' %}"
+    {% if favorites|length >= 5 %}
+    class="btn btn-warning disabled" >Favorite limit reached
+    {% else %}
+    class="btn btn-success">Add New Teams
+    {% endif %}
+    </a>
+</div>
+    
+{% endblock content %}
+    

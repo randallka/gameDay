@@ -1,0 +1,17 @@
+{% extends 'new_base.html' %}
+
+{% block content %}
+    <div>
+        
+        {% for team in teams %}
+        <form action=" {% url 'favorite_team' team.team.id %} " method="post">
+            {% csrf_token %}
+            <input class="btn" type="submit" value="{{ team.team.name }}">
+        </form>
+        {% endfor %}
+            
+    </div>    
+
+
+{% endblock content %}
+    

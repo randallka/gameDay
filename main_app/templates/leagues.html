@@ -1,0 +1,14 @@
+{% extends 'new_base.html' %}
+
+{% block content %}
+<div class="row d-flex flex-row">
+    
+    {% for league in leagues %}
+        <a href="{% url 'add_team' league.id %}"><p>{{ league.name }}</p></a>
+    {% endfor %}
+        
+
+</div>
+    
+{% endblock content %}
+    

@@ -11,7 +11,12 @@ headers = {
     "X-RapidAPI-Key": "a249ee6bfamshfb62e9b1c9d89d2p17b949jsn9d35882504fe",
     "X-RapidAPI-Host": "api-football-v1.p.rapidapi.com"
 }
-
+def league_info(id): 
+    url = "https://api-football-v1.p.rapidapi.com/v3/leagues"
+    querystring = {"id": id}
+    league = requests.request(
+        "GET", url, headers=headers, params=querystring).json()['response'][0]['league']
+    return league
 
 def get_league(id, season):
     url = "https://api-football-v1.p.rapidapi.com/v3/teams"
@@ -87,23 +92,30 @@ def get_standings(league_id, season):
     standings = requests.request(
         "GET", url, headers=headers, params=querystring).json()['response'][0]['league']
     return standings
-
+#  what I want on the home page: 
+#  tables for all 5 leagues(to go on team pages)
+#  each favorite team's last match
+#  each favorite teams next match
+#  any live games in the top 5 leagues 
 def home(request):
-    teams = get_league(39, 2022)
-    standings = get_standings(39, 2022)
-    favorite_ids = []
-    favorite_games = []
+    favorite_info = []
+    recent_matches = []
+    next_matches = []
     if request.user.is_authenticated:
         favorites = Favorite.objects.filter(user=request.user)
+        favorite_ids = []
         for favorite in favorites:
             favorite_ids.append(favorite.team_id)
-            game_obj = {}
-            game = get_games(favorite.team_id, 1)[0]
-            fix_timestamp(game)
-            game_obj["id"] = favorite.team_id
-            game_obj["game"] = game
-            favorite_games.append(game_obj)
-    return render(request, 'home.html', {'teams': teams, 'favorites': favorite_ids, 'games': favorite_games, "standings" : standings})
+        for id in favorite_ids: 
+            team = get_team(id)
+            favorite_info.append(team)
+        for id in favorite_ids: 
+            recent_match = get_last(id, 1)
+            recent_matches.append(recent_match)
+        for id in favorite_ids:
+            next_match = get_games(id, 1)
+            next_matches.append(next_match)
+    return render(request, 'home.html', {'favorites': favorite_info,'recents' : recent_matches, 'next' : next_matches})
 
 
 @login_required
@@ -176,3 +188,35 @@ def remove_comment(request, comment_id):
   comment.delete()
   return redirect('game_detail', game_id=game_id)
     
+## manage teams must include: a users favorite teams
+@login_required
+def manage(request): 
+    if request.user.is_authenticated:
+        teams = Favorite.objects.filter(user=request.user)
+        favorites = []
+        for team in teams: 
+            team_data = get_team(team.team_id)
+            favorites.append(team_data)
+        print(len(favorites))
+    return render(request, 'manage.html', {"favorites" : favorites})
+
+@login_required
+def add(request): 
+    ids = [39, 140, 135, 78, 61]
+    leagues = []
+    for id in ids: 
+        info = league_info(id)
+        leagues.append(info)
+    return render(request, 'leagues.html', {'leagues' : leagues})
+
+def add_team(request, league_id): 
+    teams = get_league(league_id, 2022)
+    favorites = Favorite.objects.filter(user=request.user)
+    ids = []
+    for favorite in favorites: 
+        id = favorite.team_id
+        ids.append(id)
+    for team in teams: 
+        if team['team']['id'] in ids: 
+            teams.remove(team)
+    return render(request, 'add_teams.html', {"teams" : teams})

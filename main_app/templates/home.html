@@ -1,92 +1,25 @@
 {% extends 'new_base.html' %}
 
-
+<!-- to include:  
+  if user isn't logged in: 
+  message telling them to log in to view teams
+  or signup to begin creating your one-stop fan station
+if user is lgged in:
+favorite team logos
+Recent results
+Upcoming results
+-->
 {% block content %}
+
 {% if user.is_authenticated %}
-<div class="row align-items-center">
-  <div class="col d-flex align-items-center text-wrap my-2 justify-content-center">
-    <h3 class="text-nowrap"><i class="fa-solid fa-circle-user align-middle"></i> {{ user }}</h3>
-</div>
-  <div class="col d-flex flex-row my-2 justify-content-center">
-    {% for team in teams %}
-    {% if team.team.id in favorites %}
-    <a href=" {% url 'team_detail' team.team.id %} "><image class="mx-2" style="height:45px" src="{{ team.team.logo }}"></image></a>
-    {% endif %}
-    {% endfor %}
-  </div>
-  <div class="col my-2 d-flex justify-content-center">
-    <div class="dropdown">
-      <button class="btn add_fav_btn dropdown-toggle text-light background-green" 
-      {% if favorites|length  >= 5 %}
-        disabled
-      {% endif %}
-         type="button"
-        data-bs-toggle="dropdown" aria-expanded="false">
-        {% if favorites|length >= 5 %}
-        Favorite limit reached
-        {% else %}
-        Add Favorite Teams
-        {% endif %}
-        
-      </button>
-      <ul class="dropdown-menu">
-          
-        {% for team in teams %}
-        {% if team.team.id in favorites %}
-        {% else %}
-        <form class="dropdown-item" action=" {% url 'favorite_team' team.team.id %} " method="post">
-          {% csrf_token %}
-          <i class="fa-regular fa-star"></i>
-          <input class="btn" type="submit" value="{{ team.team.name }}">
-        </form>
-        {% endif %}
-        {% endfor %}
-      </ul>
-    </div>
-  </div>
-  <div class="col justify-content-center d-flex my-2">
-  <button  type="button" style="min-width:87px;" class="btn btn-primary" id="myInput" data-bs-toggle="modal" data-bs-target="#exampleModal">
-    Live Table
-  </button>
-</div>
+<div class="row">
+<!-- NEEDS TO BE REFACTORED team ids no longer in "team" need to greate a list of favorites instead -->
 
-
-<div class="container-fluid text-center"><h2 class="text-light px-3 background-red rounded">Favorite Teams</h2></div>
-<div class="d-flex justify-content-center flex-column">
-
-    {% for favorite in favorites %}
-    {% for team in teams %}
-    {% if favorite == team.team.id %}
-    <br></br>
-    <div class="row">
-        <div class="containr text-center">
-            <a class="text-decoration-none text-dark h3 px-4"><i class="fa-solid fa-star"></i> {{ team.team.name }}</a>
-            <div class="d-flex flex-column justify-content-center">
-                <div class="text-center background-green rounded">
-                    {% for game in games %}
-                    
-                    {% if favorite == game.id %}
-
-                        <p class="text-light h4 mt-2">
-                            <a class="text-decoration-none text-light" href="{% url 'team_detail' game.game.teams.home.id %}"><image style="height:60px" src="{{ game.game.teams.home.logo }}"></image> <span class="hover">{{ game.game.teams.home.name }}</span></a> 
-                            vs. <a class="text-decoration-none text-light" href="{% url 'team_detail' game.game.teams.away.id %}"><span class="hover">{{ game.game.teams.away.name }}</span><image style="height:60px" src="{{ game.game.teams.away.logo }}"></image></a>
-                        </p>
-                        <p class="text-light"><i class="fa-regular fa-calendar"></i> {{ game.game.fixture.timestamp|date:"D, F j" }} at {{ game.game.fixture.timestamp|time:"f A T" }}</p>
-                        <p class="text-light"><i class="fa-solid fa-location-pin"></i> {{ game.game.fixture.venue.name }} ({{ game.game.teams.home.name }})</p>
-                        <p class="text-light"><i class="fa-solid fa-futbol"></i> Competition: {{ game.game.league.name }}</p>
-                        <a href="{% url 'game_detail' game.game.fixture.id %}" class="btn home_view_game_btn background-red text-light m-2">View Game</a>
-                    {% endif %}
-                            
-                    {% endfor %}
-                </div>
-            </div>          
-        </div>
-    </div>
-    {% endif %}
-    {% endfor %}
-    {% endfor %}
-</div>
-<br></br>
+{% for team in favorites %}
+<div class="col"><p>{{ team.team.name }}</p></div>  
+{% endfor %}
+  
+</div>  
 {% else %}
 <div class="container-fluid text-center" style="min-height:80vh;">
     <br>
