@@ -398,3 +398,9 @@ body.dark .switch::before {
 body.dark .home .text {
     color: var(--text-color);
 }
+
+@media only screen and (max-width: 700px) {
+    .login-prompt { 
+        opacity: 0;
+    }
+}

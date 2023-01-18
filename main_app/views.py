@@ -86,9 +86,14 @@ def get_game_stats(game_id):
         "GET", url, headers=headers, params=querystring).json()['response']
     return live_stats
 
-def get_standings(league_id, season): 
+
+def get_standings(team_id, season):
+    url = "https://api-football-v1.p.rapidapi.com/v3/leagues"
+    querystring = {"season": season, "team": team_id, "type": "league"}
+    standings_id = requests.request(
+        "GET", url, headers=headers, params=querystring).json()['response'][0]['league']['id']
     url = "https://api-football-v1.p.rapidapi.com/v3/standings"
-    querystring = {"season": season, "league": league_id}
+    querystring = {"season": season, "league": standings_id}
     standings = requests.request(
         "GET", url, headers=headers, params=querystring).json()['response'][0]['league']
     return standings
@@ -128,8 +133,9 @@ def team_detail(request, team_id):
         fix_timestamp(game)
     squad = get_squad(team_id)
     live_game = find_live(team_id)
+    standings = get_standings(team_id, 2022)
     favorite = Favorite.objects.filter(user=request.user, team_id=team_id)
-    return render(request, 'team.html', {'team': team, 'upcoming': upcoming_games, 'squad': squad, 'live': live_game, 'last' : last_game, "favorite" : favorite})
+    return render(request, 'team.html', {'team': team, 'upcoming': upcoming_games, 'squad': squad, 'live': live_game, 'last' : last_game, "favorite" : favorite, "standings" : standings})
 
 
 @login_required
@@ -197,7 +203,6 @@ def manage(request):
         for team in teams: 
             team_data = get_team(team.team_id)
             favorites.append(team_data)
-        print(len(favorites))
     return render(request, 'manage.html', {"favorites" : favorites})
 
 @login_required

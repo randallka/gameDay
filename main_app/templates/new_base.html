@@ -52,12 +52,17 @@
                             <span class="text nav-text">Home</span>
                         </a>
                     </li>
-                    <li class="nav-link">
+                    
+                    {% if standings %}
+                        <li class="nav-link">
                         <a id="myInput" data-bs-toggle="modal" data-bs-target="#exampleModal" href="#">
                             <i class='bx bx-bar-chart-alt-2 icon'></i>
                             <span class="text nav-text">Table</span>
                         </a>
                     </li>
+                    {% endif %}
+                        
+                    
                     <li class="nav-link">
                         <a href="{% url 'manage' %}">
                             <i class='bx bx-football icon'></i>
@@ -118,7 +123,7 @@
         </div>
 
     </nav>
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
     
             <table class="table background-grey rounded">
@@ -153,11 +158,8 @@
                     {% endfor %}
                 </tbody>
             </table>
-    
-    
         </div>
     </div>
-
     <section class="home">
         <div class="text">
 
