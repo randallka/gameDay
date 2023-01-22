@@ -116,9 +116,11 @@ def home(request):
             favorite_info.append(team)
         for id in favorite_ids: 
             recent_match = get_last(id, 1)
+            fix_timestamp(recent_match)
             recent_matches.append(recent_match)
         for id in favorite_ids:
             next_match = get_games(id, 1)
+            fix_timestamp(next_match[0])
             next_matches.append(next_match)
     return render(request, 'home.html', {'favorites': favorite_info,'recents' : recent_matches, 'next' : next_matches})
 

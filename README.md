@@ -8,8 +8,6 @@
 GameDay uses live data to show you the latest on your favorite team including upcoming games, live games, previous games, rosters, team information, and more.
 Users of GameDay have access to all Premier League teams and can engage with other fans online as they follow along.
 
-<h3>Planning</h3>
-
 <h5>User Stories</h5>
 <ul>
     <li><em>As a user, I want to select favorite teams to follow them.</em></li>
@@ -35,6 +33,7 @@ Game page below
     <li><em>Python</em></li>
     <li><em>HTML</em></li>
     <li><em>CSS</em></li>
+    <li><em>JavaScript</em></li>
     <li><em>Bootstrap</em></li>
     <li><em>Django</em></li>
     <li><em>PostgreSQL</em></li>
@@ -60,8 +59,6 @@ Game Page stats below (desktop)
 <h3>Getting Started</h3>
 
 View <strong><em>GameDay</em></strong> here: https://twilight-sky-8171.fly.dev/
-
-View Trello project board for planning here: https://trello.com/b/bJN3h2y4/gameday
 
 
 <h3>Next Steps</h3>

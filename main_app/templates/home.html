@@ -1,25 +1,54 @@
 {% extends 'new_base.html' %}
 
-<!-- to include:  
-  if user isn't logged in: 
-  message telling them to log in to view teams
-  or signup to begin creating your one-stop fan station
-if user is lgged in:
+
+<!-- if user is lgged in:
 favorite team logos
 Recent results
-Upcoming results
--->
+Upcoming results -->
+
 {% block content %}
 
 {% if user.is_authenticated %}
-<div class="row">
-<!-- NEEDS TO BE REFACTORED team ids no longer in "team" need to greate a list of favorites instead -->
+<div class="container-fluid text-center">
+  <h2>Favorites</h2>
+</div>
+<div class="container-fluid logo-bar text-center">
+  {% for team in favorites %}
+  <a href="{% url 'team_detail' team.team.id %}"><image class="logo mx-1" src="{{ team.team.logo }}"></a>
+    {% endfor %}
+</div>
+<br>
+<div class="container-fluid text-center">
+  <h2>Recent Results</h2>
+</div>
+<div class="container-fluid game-bar">
+  {% for game in recents %}
 
-{% for team in favorites %}
-<div class="col"><p>{{ team.team.name }}</p></div>  
-{% endfor %}
-  
-</div>  
+  <div class="game-card mx-2 px-2 pt-2 rounded">
+    <a class="text-decoration-none text-reset" href="{% url 'game_detail' game.fixture.id %}">
+    <div class="score">
+      <p class="fs-6">{{ game.fixture.timestamp|date:"D, F j" }}</p>
+    </div>
+    <div class="score">
+      <img class="logo" src="{{ game.teams.home.logo }}">
+      <img class="league-logo mx-2" src="{{ game.league.logo }}">
+      <img class="logo" src="{{ game.teams.away.logo }}">
+    </div>
+    <div class="score">
+      <p>{{ game.goals.home }}</p>
+      <p class="fw-light fs-5">{{ game.fixture.status.short }}</p>
+      <p>{{ game.goals.away }}</p>
+    </div>
+  </a>
+  </div>
+  {% endfor %}
+</div>
+<br>
+<div class="container-fluid text-center">
+  <h2>Upcoming Matches</h2>
+</div>
+
+
 {% else %}
 <div class="container-fluid text-center" style="min-height:80vh;">
     <br>
