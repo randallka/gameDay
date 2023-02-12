@@ -121,7 +121,7 @@ def home(request):
         for id in favorite_ids:
             next_match = get_games(id, 1)
             fix_timestamp(next_match[0])
-            next_matches.append(next_match)
+            next_matches.append(next_match[0])
     return render(request, 'home.html', {'favorites': favorite_info,'recents' : recent_matches, 'next' : next_matches})
 
 

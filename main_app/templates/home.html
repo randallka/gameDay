@@ -47,6 +47,27 @@ Upcoming results -->
 <div class="container-fluid text-center">
   <h2>Upcoming Matches</h2>
 </div>
+<div class="container-fluid game-bar">
+  {% for game in next %}
+
+  <div class="game-card mx-2 px-2 pt-2 rounded">
+    
+  <a class="text-decoration-none text-reset" href="{% url 'game_detail' game.fixture.id %}">
+    <div class="score">
+      <p class="fs-6">{{ game.fixture.timestamp|date:"D, F j" }}</p>
+    </div>
+    <div class="score">
+      <img class="logo" src="{{ game.teams.home.logo }}">
+      <img class="league-logo mx-2" src="{{ game.league.logo }}">
+      <img class="logo" src="{{ game.teams.away.logo }}">
+    </div>
+    <div class="score">
+      <p class="fs-6">{{ game.fixture.timestamp|time:"f A T" }}</p>
+    </div>
+  </a>
+  </div>
+  {% endfor %}
+</div>
 
 
 {% else %}
